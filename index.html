@@ -6,153 +6,133 @@
     <title>تهنئة خاصة | م / محمد سليمان</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <style>
-        :root {
-            --gold: #d4af37;
-            --night-bg: #020617;
-            --sunrise-bg: linear-gradient(180deg, #ffafbd 0%, #ffc3a0 100%);
-            --white: #fffdf5;
-        }
+  <style>
+:root {
+    --gold: #d4af37;
+    --night-bg: #020617;
+    --white: #fffdf5;
+}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            background-color: var(--night-bg);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            font-family: 'Amiri', serif;
-            transition: background 3s ease-in-out;
-            cursor: pointer;
-        }
+body {
+    background-color: var(--night-bg);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Amiri', serif;
+    transition: background 2s ease-in-out;
+    cursor: pointer;
+    padding: 15px;
+}
 
-        /* تأثير سماء الفجر عند التفعيل */
-        body.is-eid {
-            background: radial-gradient(circle at top, #334d50, #cbcaa5);
-        }
+/* عند الضغط */
+body.is-eid {
+    background: radial-gradient(circle at top, #334d50, #cbcaa5);
+}
 
-        .container {
-            text-align: center;
-            z-index: 10;
-            width: 90%;
-            max-width: 600px;
-        }
+.container {
+    text-align: center;
+    z-index: 10;
+    width: 100%;
+    max-width: 500px;
+}
 
-        /* الهلال المركزي */
-        .moon-icon {
-            font-size: 80px;
-            color: var(--gold);
-            filter: drop-shadow(0 0 20px var(--gold));
-            margin-bottom: 30px;
-            transition: all 2s ease;
-            display: inline-block;
-            animation: pulse 2s infinite alternate;
-        }
+/* الهلال */
+.moon-icon {
+    font-size: clamp(50px, 12vw, 80px);
+    color: var(--gold);
+    filter: drop-shadow(0 0 20px var(--gold));
+    margin-bottom: 20px;
+    animation: pulse 2s infinite alternate;
+}
 
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 0.8; }
-            to { transform: scale(1.1); opacity: 1; }
-        }
+@keyframes pulse {
+    from { transform: scale(1); opacity: 0.8; }
+    to { transform: scale(1.1); opacity: 1; }
+}
 
-        .is-eid .moon-icon {
-            transform: translateY(-50px) scale(0.8);
-            filter: drop-shadow(0 0 40px #fff);
-            color: #fff;
-        }
+.is-eid .moon-icon {
+    transform: translateY(-30px) scale(0.8);
+    color: #fff;
+}
 
-        /* نصوص التهنئة */
-        .content {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.5s ease 1s;
-        }
+/* المحتوى */
+.content {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: 1s ease 0.5s;
+}
 
-        .is-eid .content {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.is-eid .content {
+    opacity: 1;
+    transform: translateY(0);
+}
 
-        h1 {
-            font-family: 'Reem Kufi', sans-serif;
-            font-size: 4rem;
-            color: var(--white);
-            margin-bottom: 20px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
+/* العنوان */
+h1 {
+    font-family: 'Reem Kufi', sans-serif;
+    font-size: clamp(28px, 8vw, 45px);
+    color: var(--white);
+    margin-bottom: 15px;
+}
 
-        .message {
-            font-size: 1.8rem;
-            color: var(--white);
-            line-height: 1.8;
-            margin-bottom: 50px;
-        }
+/* الرسالة */
+.message {
+    font-size: clamp(16px, 4.5vw, 20px);
+    line-height: 1.8;
+    color: var(--white);
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
 
-        /* توقيع م / محمد سليمان مع اللمعة الذهبية */
-        .signature-box {
-            position: relative;
-            display: inline-block;
-            margin-top: 20px;
-        }
+/* التوقيع */
+.signature {
+    font-size: clamp(14px, 4vw, 18px);
+    color: var(--gold);
+    padding: 8px 20px;
+    border-top: 1px solid var(--gold);
+    border-bottom: 1px solid var(--gold);
+}
 
-        .signature {
-            font-size: 1.6rem;
-            font-weight: bold;
-            color: var(--gold);
-            padding: 10px 30px;
-            border-top: 1px solid var(--gold);
-            border-bottom: 1px solid var(--gold);
-            position: relative;
-            overflow: hidden;
-        }
+/* hint */
+.hint {
+    position: fixed;
+    bottom: 20px;
+    font-size: 12px;
+    color: var(--gold);
+}
 
-        /* تأثير اللمعة (Shine) */
-        .signature::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            transform: skewX(-25deg);
-            animation: shine 4s infinite;
-        }
+.is-eid .hint {
+    display: none;
+}
 
-        @keyframes shine {
-            0% { left: -100%; }
-            20% { left: 150%; }
-            100% { left: 150%; }
-        }
+/* النجوم */
+#stars-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 
-        .hint {
-            position: fixed;
-            bottom: 30px;
-            color: var(--gold);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            animation: blink 1.5s infinite;
-        }
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: twinkle var(--duration) infinite;
+}
 
-        .is-eid .hint { display: none; }
-
-        @keyframes blink {
-            50% { opacity: 0.3; }
-        }
-
-        /* نجوم الخلفية */
-        .star {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: twinkle var(--duration) infinite;
-        }
-
-        @keyframes twinkle {
-            50% { opacity: 0.1; }
-        }
-    </style>
+@keyframes twinkle {
+    50% { opacity: 0.1; }
+}
+</style>
 </head>
 <body onclick="startEid()">
 
